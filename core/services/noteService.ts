@@ -21,4 +21,9 @@ export default class {
     note.id++
     this.notes.push(note)
   }
+  findNotes(title: string, content: string) {
+    return this.notes.filter(
+      (n) => n.content.includes(content) || n.title.includes(title),
+    )
+  }
 }

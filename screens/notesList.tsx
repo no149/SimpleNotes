@@ -17,6 +17,7 @@ import MiniNote from '../components/miniNote'
 import SearchBar from '../components/searchBar'
 import React from 'react'
 import NoteView from './note'
+import noteService from '../core/services/noteService'
 
 type Props = {
   notes?: Note[]
@@ -28,18 +29,15 @@ type Props = {
 type state = { notes: Note[] }
 
 export default class NotesList extends React.Component<Props, state> {
+  noteSrv = new noteService()
   constructor(props: Props) {
     super(props)
     const notes = props.notes
-
     this.state = { notes: notes }
   }
   search(text: string) {
-    const result = [
-      { id: 1, title: 'result 1', content: 'content 1' },
-      { id: 2, title: 'result 2', content: 'content 2' },
-      { id: 3, title: 'result 3', content: 'content 3' },
-    ]
+    const result = this.noteSrv.findNotes(text, text)
+
     this.setState({ notes: result })
   }
 
