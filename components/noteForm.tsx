@@ -77,6 +77,7 @@ export default class Note extends React.Component<props, state> {
               onChangeText={this.setNoteTitle.bind(this)}
               style={style.input}
             />
+
             <TextInput
               onChangeText={this.setNoteDescription.bind(this)}
               placeholder="Description"
