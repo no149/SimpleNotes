@@ -1,16 +1,32 @@
+import contentType from "../types/contentType"
+
 export default class Note {
   title: string
-  content: ImageContent[] | SoundContent[] | TextContent[]
+  contents: NoteContent<contentType>[]
   id: number = 0
   static unsavedId: number = 0
 }
 
-class NoteContent<type> {
+export class NoteContent<type> {
+
+
+  id:number
   content: type
-  constructor() {}
+  constructor(id: number, content:type) {
+    this.id= id;
+    this.content= content
+  }
 }
 
-export class ImageContent extends NoteContent<Blob> {}
+export class ImageContent extends NoteContent<{uri:string}> {
+  constructor(id:number, content:{uri:string}){
+    super(id,content)
+  }
+}
 
-export class TextContent extends NoteContent<string> {}
+export class TextContent extends NoteContent<string> {
+  constructor (id:number, content:string){
+super(id, content);
+  }
+}
 export class SoundContent extends NoteContent<Blob> {}

@@ -24,7 +24,7 @@ function save(description: string, title: string, noteId: number) {
     : new Note()
   if (note == undefined) console.warn('note not found')
   else {
-    note.content = description
+    note.contents = description
     note.title = title
     noteSrv.saveNote(note)
   }

@@ -17,7 +17,7 @@ export default function NoteCommandBar({
       <Button title="Delete" disabled={note == undefined} />
       <Button
         onPress={() => {
-          save(note.content, note.title, note.id, saved)
+          save(note.contents, note.title, note.id, saved)
         }}
         title="Save"
       />
@@ -40,7 +40,7 @@ function save(
     : new Note()
   if (note == undefined) console.warn('note not found')
   else {
-    note.content = description
+    note.contents = description
     note.title = title
     noteSrv.saveNote(note)
     saved(note)

@@ -1,20 +1,40 @@
-import Note from '../../model/note'
+import { Asset } from 'expo-asset'
+import Note, { TextContent,ImageContent } from '../../model/note'
+import { readAsStringAsync } from 'expo-file-system'
 
 export default class {
   deleteNote(noteId: number) {
     this.notes = this.notes.filter((n) => n.id != noteId)
     return this.notes
   }
-  private notes: Note[] = [
-    { id: 1, title: 'note 1', content: 'content 1' },
-    { title: 'note 2', content: 'content 2', id: 2 },
-    { title: 'note 3', content: 'content 3', id: 3 },
-    { title: 'note 4', content: 'content 4', id: 4 },
-    { title: 'note 5', content: 'content 5', id: 5 },
-    { title: 'note 6', content: 'content 6', id: 6 },
+  private notes: Note[] ;
+private notesInit=false
+  async initNotes(){
+    const img = new ImageContent(6,await this.getSamplePicture())
+   
+   this.notes = [
+      {id:1, title:'title 1', contents:[new TextContent(1,'content 1')]} ,
+      {id:2, title:'title 2', contents:[new TextContent(2,'content 2')]} ,
+      {id:3, title:'title 3', contents:[new TextContent(3,'content 3')]} ,
+      {id:4, title:'title 4', contents:[new TextContent(4,'content 4')]} ,
+      {id:5, title:'title 5', contents:[new TextContent(5,'content 5')]} ,
+      {id:6, title:'title 6', contents:[img]} ,
+   
   ]
+  this.notesInit=true
+  }
+async getSamplePicture(){
+  const asset = Asset.fromModule( require('../../assets/sample.jpg'))
+   await asset.downloadAsync()
+   return {uri:asset.localUri??""}
+  //  const file = await readAsStringAsync(asset.localUri??"")
+  //  return new Blob([file],{type:"image/png"})
 
-  getNotes() {
+}
+  async getNotes() {
+    if(!this.notesInit)
+    await this.initNotes()
+
     return this.notes
   }
   saveNote(note: Note) {
@@ -22,8 +42,9 @@ export default class {
     this.notes.push(note)
   }
   findNotes(title: string, content: string) {
-    return this.notes.filter(
-      (n) => n.content.includes(content) || n.title.includes(title),
-    )
+    return []
+    //return this.notes.filter(
+      //(n) => n.contents.includes(content) || n.title.includes(title),
+    //)
   }
 }

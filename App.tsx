@@ -26,13 +26,24 @@ import Container from './components/container'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-export default class App extends React.Component {
+export default class App extends React.Component<any,{isNoteEditMode:boolean,note:Note,notes:Note[]}> {
   noteSrv = new noteService()
-  state = {
-    isNoteEditMode: false,
-    note: new Note(),
-    notes: this.noteSrv.getNotes(),
+  constructor(props){
+    super(props)
+    this.state = {
+      isNoteEditMode: false,
+      note: new Note(),
+      notes: [],
+    }
   }
+componentDidMount(): void {
+  this.noteSrv.getNotes()
+  .then(notes=>
+    {
+ this.setState({notes:notes })
+    } 
+ )
+}
 
   createNote() {
     let newNote = new Note()
@@ -52,7 +63,7 @@ export default class App extends React.Component {
     const note = isNew ? new Note() : notes.filter((n) => n.id == noteId).at(0)
 
     note.title = title
-    note.content = content
+   // note.contents = content
     this.setState({
       notes: [...notes.filter((n) => n.id != noteId), note],
       isNoteEditMode: false,
@@ -64,8 +75,8 @@ export default class App extends React.Component {
     const { note } = this.state
     const { notes } = this.state
     const nav = <Button title="New note" onPress={this.createNote.bind(this)} />
+    console.log('notes cnt 1:' + notes.length)
 
-    console.log('isNoteEditMode:' + isNoteEditMode)
     return (
       <PaperProvider theme={DefaultTheme}>
         <SafeAreaView>

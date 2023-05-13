@@ -18,7 +18,7 @@ type Props = {
 
 export default ({ note, saved, closed, style, visible, deleted }: Props) => {
   const [noteTitle, setNoteTitle] = useState(note.title)
-  const [noteContent, setNoteContent] = useState(note.content)
+  const [noteContent, setNoteContent] = useState(note.contents)
   const [noteId] = useState(note.id)
 
   console.log('test:' + note.title)
@@ -26,7 +26,7 @@ export default ({ note, saved, closed, style, visible, deleted }: Props) => {
     <View style={style}>
       <NoteForm
         noteTitle={note.title}
-        noteContent={note.content}
+        noteContent={note.contents}
         noteId={note.id}
         saved={saved}
         closed={closed}

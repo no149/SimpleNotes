@@ -20,7 +20,7 @@ import NoteView from './note'
 import noteService from '../core/services/noteService'
 
 type Props = {
-  notes?: Note[]
+  notes: Note[]
   newOrUpdatedNote?: Note
   noteSaved?: (note: Note) => void
   noteSelected: (note: Note) => void
@@ -33,6 +33,8 @@ export default class NotesList extends React.Component<Props, state> {
   constructor(props: Props) {
     super(props)
     const notes = props.notes
+    console.log('notes cnt 2:' + notes.length)
+
     this.state = { notes: notes }
   }
   search(text: string) {
@@ -43,12 +45,14 @@ export default class NotesList extends React.Component<Props, state> {
 
   render() {
     // const { navigation } = this.props
-    const { notes } = this.state
+    const { notes } = this.props
+    console.log('notes cnt 3:' + notes.length)
+    
     const updateNote = (note: Note): void => {
       this.setState({
         notes: [
           ...notes.filter((n) => n.id != note.id),
-          { id: note.id, title: note.title, content: note.content },
+          { id: note.id, title: note.title, contents: note.contents },
         ],
       })
     }
@@ -91,7 +95,7 @@ function renderNote(
         noteSelected(info.item)
       }
     >
-      <MiniNote title={info.item.title} content={info.item.content} />
+      <MiniNote title={info.item.title} content={info.item.contents} />
     </TouchableOpacity>
   )
 }

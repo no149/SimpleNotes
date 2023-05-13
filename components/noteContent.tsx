@@ -1,21 +1,25 @@
-import { Image, View } from 'react-native'
-import { ImageContent, SoundContent, TextContent } from '../model/note'
+import { TextInput, View ,Text} from 'react-native'
+import { ImageContent, NoteContent, SoundContent, TextContent } from '../model/note'
+import Image from './ImageContent'
+import contentType from '../types/contentType';
+import React from 'react';
 
 export default ({
   contents,
 }: {
-  contents: ImageContent[] | SoundContent[] | TextContent[]
+  contents: NoteContent<contentType>[]
 }) => {
-  contents.map((c) => {
-    c instanceof ImageContent ? (
-      <Image source={{}} />
-    ) : c instanceof SoundContent ? (
-      <></>
-    ) : (
-      <></>
-    )
-  })
+  return (
+    contents.map((c) => {
+      if(c instanceof ImageContent){
+        console.log('image content:'+c.content.uri)
+        return <Image image={c} />
+      }
+    else if(c instanceof TextContent)
+    return <TextInput defaultValue={c.content}/>
+    })
+
+)
 }
 
-function f(contents: ImageContent[] | SoundContent[] | TextContent[]) {}
-f([new ImageContent(), new SoundContent()])
+
