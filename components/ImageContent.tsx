@@ -7,15 +7,15 @@ import React from 'react'
 export default ({
   image,
   width,
-  height,
+  maxheight: height,
 }: {
   image: ImageContent
-  width: number
-  height: number
+  width?: number
+  maxheight: number
 }) => {
-  let style = StyleSheet.create({ image: { height: height } })
+  let style = StyleSheet.create({ image: { maxHeight: height } })
   if (width)
-    style = StyleSheet.create({ image: { height: height, width: width } })
+    style = StyleSheet.create({ image: { maxHeight: height, maxWidth: width } })
 
-  return <Image source={image.content} style={style.image} />
+  return <Image source={image.content} style={style.image} resizeMode="cover" />
 }

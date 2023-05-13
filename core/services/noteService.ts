@@ -13,7 +13,16 @@ export default class {
     const img = new ImageContent(6, await this.getSamplePicture())
 
     this.notes = [
-      { id: 1, title: 'title 1', contents: [new TextContent(1, 'content 1')] },
+      {
+        id: 1,
+        title: 'title 1',
+        contents: [
+          new TextContent(
+            1,
+            'content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 11content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1content 1',
+          ),
+        ],
+      },
       { id: 2, title: 'title 2', contents: [new TextContent(2, 'content 2')] },
       { id: 3, title: 'title 3', contents: [new TextContent(3, 'content 3')] },
       { id: 4, title: 'title 4', contents: [new TextContent(4, 'content 4')] },

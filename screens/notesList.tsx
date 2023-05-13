@@ -13,7 +13,7 @@ import {
 import Note from '../model/note'
 import RootStackParamList from '../types/notesListNavigator'
 import style from '../styles/notesList'
-import MiniNote from '../components/miniNote'
+import MiniNote from '../components/listNote'
 import SearchBar from '../components/searchBar'
 import React from 'react'
 import NoteView from './note'
@@ -47,7 +47,7 @@ export default class NotesList extends React.Component<Props, state> {
     // const { navigation } = this.props
     const { notes } = this.props
     console.log('notes cnt 3:' + notes.length)
-    
+
     const updateNote = (note: Note): void => {
       this.setState({
         notes: [
@@ -83,19 +83,19 @@ function renderNote(
   noteSelected: (note: Note) => void,
 ) {
   return (
-    <TouchableOpacity
-      onPress={() =>
-        // navigation.navigate('NoteView', {
-        //   note: info.item,
-        //   notes: notes,
-        //   saved(note) {
-        //     noteUpdated(note)
-        //   },
-        // })
-        noteSelected(info.item)
-      }
-    >
-      <MiniNote title={info.item.title} content={info.item.contents} />
-    </TouchableOpacity>
+    //<TouchableOpacity
+    //onPress={() =>
+    // navigation.navigate('NoteView', {
+    //   note: info.item,
+    //   notes: notes,
+    //   saved(note) {
+    //     noteUpdated(note)
+    //   },
+    // })
+    //noteSelected(info.item)
+    //}
+    //>
+    <MiniNote title={info.item.title} content={info.item.contents} />
+    //</TouchableOpacity>
   )
 }

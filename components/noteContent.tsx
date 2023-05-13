@@ -11,20 +11,19 @@ import React from 'react'
 
 export default ({
   contents,
-  imageWidth,
-  imageHeight,
+
+  height,
 }: {
   contents: NoteContent<contentType>[]
-  imageWidth?: number
-  imageHeight: number
+  height: number
 }) => {
   return (
     <>
       {contents.map((c) => {
         if (c instanceof ImageContent) {
-          return <Image image={c} height={imageHeight} width={imageWidth} />
+          return <Image image={c} maxheight={height} />
         } else if (c instanceof TextContent)
-          return <TextInput defaultValue={c.content} />
+          return <Text style={{ maxHeight: height }}>{c.content}</Text>
       })}
     </>
   )
