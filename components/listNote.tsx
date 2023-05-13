@@ -1,8 +1,8 @@
 import { Text, TouchableOpacity, View } from 'react-native'
 import style from '../styles/miniNote'
 import contentType from '../types/contentType'
-import NoteContentView from './noteContent'
-import { NoteContent } from '../model/note'
+import NoteContent from './noteContent'
+import { NoteContent as Note } from '../model/note'
 import React from 'react'
 import { useState } from 'react'
 import { Button } from 'react-native'
@@ -12,7 +12,7 @@ export default ({
   content,
 }: {
   title: string
-  content: NoteContent<contentType>[]
+  content: Note<contentType>[]
 }) => {
   const [fullSize, setFullSize] = useState(false)
   return (
@@ -27,7 +27,7 @@ export default ({
           <Button onPress={() => console.log('edit touched')} title="Edit" />
         )}
         <Text style={style.listItemHeader}>{title}</Text>
-        <NoteContentView contents={content} height={fullSize ? 100 : 50} />
+        <NoteContent contents={content} height={fullSize ? undefined : 50} />
       </View>
     </TouchableOpacity>
   )

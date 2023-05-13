@@ -21,7 +21,7 @@ export default ({
     <>
       {contents.map((c) => {
         if (c instanceof ImageContent) {
-          return <Image image={c} maxheight={height} />
+          return <Image image={c} height={height} />
         } else if (c instanceof TextContent)
           return <Text style={{ maxHeight: height }}>{c.content}</Text>
       })}

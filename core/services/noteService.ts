@@ -27,7 +27,26 @@ export default class {
       { id: 3, title: 'title 3', contents: [new TextContent(3, 'content 3')] },
       { id: 4, title: 'title 4', contents: [new TextContent(4, 'content 4')] },
       { id: 5, title: 'title 5', contents: [new TextContent(5, 'content 5')] },
-      { id: 6, title: 'title 6', contents: [img] },
+      { id: 6, title: 'title 6', contents: [new TextContent(6, 'content 6')] },
+      { id: 7, title: 'title 7', contents: [new TextContent(7, 'content 7')] },
+      { id: 8, title: 'title 8', contents: [new TextContent(8, 'content 8')] },
+      { id: 9, title: 'title 9', contents: [new TextContent(9, 'content 9')] },
+      {
+        id: 10,
+        title: 'title 10',
+        contents: [new TextContent(10, 'content 10')],
+      },
+      {
+        id: 11,
+        title: 'title 11',
+        contents: [new TextContent(11, 'content 11')],
+      },
+      {
+        id: 13,
+        title: 'title 13',
+        contents: [new TextContent(13, 'content 13')],
+      },
+      { id: 12, title: 'title 12', contents: [img] },
     ]
     this.notesInit = true
   }
