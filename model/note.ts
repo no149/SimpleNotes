@@ -1,4 +1,4 @@
-import contentType from "../types/contentType"
+import contentType from '../types/contentType'
 
 export default class Note {
   title: string
@@ -8,25 +8,23 @@ export default class Note {
 }
 
 export class NoteContent<type> {
-
-
-  id:number
+  id: number
   content: type
-  constructor(id: number, content:type) {
-    this.id= id;
-    this.content= content
+  constructor(id: number, content: type) {
+    this.id = id
+    this.content = content
   }
 }
 
-export class ImageContent extends NoteContent<{uri:string}> {
-  constructor(id:number, content:{uri:string}){
-    super(id,content)
+export class ImageContent extends NoteContent<{ uri: string } | number> {
+  constructor(id: number, content: { uri: string } | number) {
+    super(id, content)
   }
 }
 
 export class TextContent extends NoteContent<string> {
-  constructor (id:number, content:string){
-super(id, content);
+  constructor(id: number, content: string) {
+    super(id, content)
   }
 }
 export class SoundContent extends NoteContent<Blob> {}
