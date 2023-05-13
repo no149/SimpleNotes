@@ -18,13 +18,12 @@ export default ({
   height: number
 }) => {
   return (
-    <>
+    <View style={{ maxHeight: height }}>
       {contents.map((c) => {
         if (c instanceof ImageContent) {
-          return <Image image={c} height={height} />
-        } else if (c instanceof TextContent)
-          return <Text style={{ maxHeight: height }}>{c.content}</Text>
+          return <Image image={c} />
+        } else if (c instanceof TextContent) return <Text>{c.content}</Text>
       })}
-    </>
+    </View>
   )
 }

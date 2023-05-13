@@ -26,9 +26,12 @@ import Container from './components/container'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-export default class App extends React.Component<any,{isNoteEditMode:boolean,note:Note,notes:Note[]}> {
+export default class App extends React.Component<
+  any,
+  { isNoteEditMode: boolean; note: Note; notes: Note[] }
+> {
   noteSrv = new noteService()
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       isNoteEditMode: false,
@@ -36,14 +39,11 @@ export default class App extends React.Component<any,{isNoteEditMode:boolean,not
       notes: [],
     }
   }
-componentDidMount(): void {
-  this.noteSrv.getNotes()
-  .then(notes=>
-    {
- this.setState({notes:notes })
-    } 
- )
-}
+  componentDidMount(): void {
+    this.noteSrv.getNotes().then((notes) => {
+      this.setState({ notes: notes })
+    })
+  }
 
   createNote() {
     let newNote = new Note()
@@ -63,7 +63,7 @@ componentDidMount(): void {
     const note = isNew ? new Note() : notes.filter((n) => n.id == noteId).at(0)
 
     note.title = title
-   // note.contents = content
+    // note.contents = content
     this.setState({
       notes: [...notes.filter((n) => n.id != noteId), note],
       isNoteEditMode: false,
@@ -78,31 +78,33 @@ componentDidMount(): void {
     console.log('notes cnt 1:' + notes.length)
 
     return (
-      <PaperProvider theme={DefaultTheme}>
-        <SafeAreaView>
-          <Container
-            style={mainStyle.mainContainer}
-            navigation={[nav]}
-            visible={!isNoteEditMode}
-          >
-            <NotesList
-              notes={notes}
-              noteSelected={this.noteSelected.bind(this)}
-            />
-          </Container>
-
-          <View style={mainStyle.mainContainer}>
-            <NoteView
-              note={note}
-              saved={this.noteSaved.bind(this)}
-              style={{ height: '100%' }}
-              closed={() => this.setState({ isNoteEditMode: false })}
-              visible={isNoteEditMode}
-              deleted={this.noteDeleted.bind(this)}
-            />
-          </View>
-        </SafeAreaView>
-      </PaperProvider>
+      <SafeAreaView
+        style={{
+          flexDirection: 'column',
+          flexGrow: 1,
+        }}
+      >
+        <Container
+          style={mainStyle.mainContainer}
+          navigation={[nav]}
+          visible={!isNoteEditMode}
+        >
+          <NotesList
+            notes={notes}
+            noteSelected={this.noteSelected.bind(this)}
+          />
+        </Container>
+        <Modal style={mainStyle.mainContainer} visible={isNoteEditMode}>
+          <NoteView
+            note={note}
+            saved={this.noteSaved.bind(this)}
+            style={{ height: '100%' }}
+            closed={() => this.setState({ isNoteEditMode: false })}
+            visible={isNoteEditMode}
+            deleted={this.noteDeleted.bind(this)}
+          />
+        </Modal>
+      </SafeAreaView>
     )
   }
 }

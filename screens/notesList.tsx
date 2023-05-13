@@ -59,7 +59,7 @@ export default class NotesList extends React.Component<Props, state> {
 
     console.log(this.props.noteSelected)
     return (
-      <View>
+      <View style={{ flex: 1 }}>
         <View>
           <SearchBar searcher={this.search.bind(this)} />
         </View>

@@ -15,14 +15,12 @@ export default ({
   visible: boolean
 }) => {
   console.log('children:' + children)
-  return (
-    visible? (
-      <View style={mainStyle.mainContainer}>
-        <View style={mainStyle.navbar}>{navigation}</View>
-        <View style={mainStyle.mainContent}>
-          <View>{children}</View>
-        </View>
-      </View>):<></>
-    )
-  
+  return visible ? (
+    <View style={mainStyle.mainContainer}>
+      <View style={mainStyle.navbar}>{navigation}</View>
+      <View style={mainStyle.mainContent}>{children}</View>
+    </View>
+  ) : (
+    <></>
+  )
 }

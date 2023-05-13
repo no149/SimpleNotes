@@ -13,12 +13,5 @@ export default ({
   width?: number
   height?: number
 }) => {
-  console.log('max height:' + height)
-  let style = StyleSheet.create({ image: { height: height } })
-  if (width)
-    style = StyleSheet.create({
-      image: { height: height, maxWidth: width, aspectRatio: 1 },
-    })
-
-  return <Image source={image.content} style={style.image} resizeMode="cover" />
+  return <Image source={image.content} resizeMode="cover" />
 }

@@ -46,6 +46,11 @@ export default class {
         title: 'title 13',
         contents: [new TextContent(13, 'content 13')],
       },
+      {
+        id: 14,
+        title: 'title 14',
+        contents: [new TextContent(14, 'content 14')],
+      },
       { id: 12, title: 'title 12', contents: [img] },
     ]
     this.notesInit = true
