@@ -1,10 +1,10 @@
 import noteStyle from '../styles/note'
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
+import { View, TextInput, Button, StyleSheet, Text, Image } from 'react-native'
 import React from 'react'
 import { ViewStyle } from 'react-native/types'
 import Container from './container'
 import contentType from '../types/contentType'
-import { NoteContent } from '../model/note'
+import { ImageContent, NoteContent, TextContent } from '../model/note'
 
 interface props extends state {
   saved: (
@@ -82,7 +82,15 @@ export default class Note extends React.Component<props, state> {
               onChangeText={this.setNoteTitle.bind(this)}
               style={style.input}
             />
-            //add editing content
+            {/*add editing content*/}
+
+            {noteContent.map((content) => {
+              if (content instanceof TextContent) {
+                return <Text>{content.content}</Text>
+              } else if (content instanceof ImageContent) {
+                return <Image source={content.content} />
+              }
+            })}
           </View>
         </View>
       </Container>
