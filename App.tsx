@@ -86,7 +86,7 @@ export default class App extends React.Component<
       >
         <Container
           style={mainStyle.mainContainer}
-          navigation={[nav]}
+          navigation={nav}
           visible={!isNoteEditMode}
         >
           <NotesList

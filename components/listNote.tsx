@@ -10,25 +10,19 @@ import { Button } from 'react-native'
 export default ({
   title,
   content,
+  isSelected,
 }: {
   title: string
   content: Note<contentType>[]
+  isSelected: boolean
 }) => {
-  const [fullSize, setFullSize] = useState(false)
   return (
-    <TouchableOpacity
-      onPress={() => {
-        console.log('list note touched')
-        setFullSize(!fullSize)
-      }}
-    >
-      <View style={style.listItem}>
-        {fullSize && (
-          <Button onPress={() => console.log('edit touched')} title="Edit" />
-        )}
-        <Text style={style.listItemHeader}>{title}</Text>
-        <NoteContent contents={content} height={fullSize ? undefined : 50} />
-      </View>
-    </TouchableOpacity>
+    <View style={style.listItem}>
+      {isSelected && (
+        <Button onPress={() => console.log('edit touched')} title="Edit" />
+      )}
+      <Text style={style.listItemHeader}>{title}</Text>
+      <NoteContent contents={content} height={isSelected ? undefined : 50} />
+    </View>
   )
 }
