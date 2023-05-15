@@ -3,20 +3,25 @@ import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
 import React from 'react'
 import { ViewStyle } from 'react-native/types'
 import Container from './container'
+import contentType from '../types/contentType'
+import { NoteContent } from '../model/note'
 
 interface props extends state {
-  saved: (noteId: number, title: string, content: string) => void
+  saved: (
+    noteId: number,
+    title: string,
+    content: NoteContent<contentType>[],
+  ) => void
   closed: () => void
   deleted: (noteId: number) => void
   visible: boolean
   noteTitle: string
-  noteContent: string
   noteId: number
 }
 
 interface state {
   noteTitle: string
-  noteContent: string
+  noteContent: NoteContent<contentType>[]
   noteId: number
 }
 
@@ -77,17 +82,7 @@ export default class Note extends React.Component<props, state> {
               onChangeText={this.setNoteTitle.bind(this)}
               style={style.input}
             />
-
-            <TextInput
-              onChangeText={this.setNoteDescription.bind(this)}
-              placeholder="Description"
-              multiline={true}
-              defaultValue={noteContent}
-              style={style.input}
-              numberOfLines={10}
-              textAlignVertical="top"
-              scrollEnabled={true}
-            />
+            //add editing content
           </View>
         </View>
       </Container>

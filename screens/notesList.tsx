@@ -21,9 +21,8 @@ type Props = {
   notes: Note[]
   newOrUpdatedNote?: Note
   noteSaved?: (note: Note) => void
-  noteSelected: (note: Note) => void
+  editNote: (noteId: number) => void
 }
-//NativeStackScreenProps<RootStackParamList, 'NotesList', 'MyStack'>
 type state = { notes: Note[]; selectedNoteId: number }
 
 function search(text: string) {
@@ -40,38 +39,38 @@ function search(text: string) {
 //   })
 // }
 
-export default ({ notes }: Props) => {
+export default ({ notes, editNote }: Props) => {
   const [selectedNoteId, setSelectedNoteId] = useState(NaN)
 
   const noteSelectedToggled = (note: Note) => {
     setSelectedNoteId(selectedNoteId == note.id ? NaN : note.id)
   }
 
-  const ListMemo = memo(
-    function ({
-      notes,
-      selectedNoteId,
-    }: {
-      notes: Note[]
-      // noteUpdated: (note: Note) => void,
-      selectedNoteId: number
-    }) {
-      return (
-        <FlatList
-          data={notes}
-          renderItem={(i) => (
-            <ListItem
-              isSelected={selectedNoteId == i.item.id}
-              note={i.item}
-              noteSelectedToggled={noteSelectedToggled}
-            />
-          )}
-          keyExtractor={(item) => item.id.toString()}
-        ></FlatList>
-      )
-    },
-    () => true,
-  )
+  //   const ListMemo = memo(
+  //     function ({
+  //       notes,
+  //       selectedNoteId,
+  //     }: {
+  //       notes: Note[]
+  //       // noteUpdated: (note: Note) => void,
+  //       selectedNoteId: number
+  //     }) {
+  //       return (
+  //         <FlatList
+  //           data={notes}
+  //           renderItem={(i) => (
+  //             <ListItem
+  //               isSelected={selectedNoteId == i.item.id}
+  //               note={i.item}
+  //               noteSelectedToggled={noteSelectedToggled}
+  //             />
+  //           )}
+  //           keyExtractor={(item) => item.id.toString()}
+  //         ></FlatList>
+  //       )
+  //     },
+  //     () => true,
+  //   )
 
   return (
     <View style={{ flex: 1 }}>
@@ -85,6 +84,7 @@ export default ({ notes }: Props) => {
             isSelected={selectedNoteId == i.item.id}
             note={i.item}
             noteSelectedToggled={noteSelectedToggled}
+            editNote={editNote}
           />
         )}
         keyExtractor={(item) => item.id.toString()}
@@ -97,11 +97,13 @@ function ListItem({
   note,
   noteSelectedToggled: noteSelectToggled,
   isSelected,
+  editNote,
 }: {
   note: Note
   // noteUpdated: (note: Note) => void,
   noteSelectedToggled: (note: Note) => void
   isSelected: boolean
+  editNote: (noteId: number) => void
 }) {
   return (
     <TouchableOpacity onPress={() => noteSelectToggled(note)}>
@@ -109,6 +111,8 @@ function ListItem({
         title={note.title}
         content={note.contents}
         isSelected={isSelected}
+        editNote={editNote}
+        noteId={note.id}
       />
     </TouchableOpacity>
   )

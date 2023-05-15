@@ -28,15 +28,15 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export default class App extends React.Component<
   any,
-  { isNoteEditMode: boolean; note: Note; notes: Note[] }
+  { isNoteEditMode: boolean; notes: Note[]; editedNoteId: number }
 > {
   noteSrv = new noteService()
   constructor(props) {
     super(props)
     this.state = {
       isNoteEditMode: false,
-      note: new Note(),
       notes: [],
+      editedNoteId: NaN,
     }
   }
   componentDidMount(): void {
@@ -45,14 +45,15 @@ export default class App extends React.Component<
     })
   }
 
+  editNote(noteId: number) {
+    this.setState({ isNoteEditMode: true, editedNoteId: noteId })
+  }
+
   createNote() {
     let newNote = new Note()
-    this.setState({ note: newNote, isNoteEditMode: true })
+    this.setState({ isNoteEditMode: true })
   }
-  noteSelected(selectedNote: Note) {
-    console.log('selected note id:' + selectedNote.id)
-    this.setState({ isNoteEditMode: true, note: selectedNote })
-  }
+
   noteDeleted(noteId: number) {
     const notes = this.noteSrv.deleteNote(noteId)
     this.setState({ isNoteEditMode: false, notes: notes })
@@ -72,10 +73,10 @@ export default class App extends React.Component<
 
   render(): React.ReactNode {
     const { isNoteEditMode } = this.state
-    const { note } = this.state
+    const { editedNoteId } = this.state
     const { notes } = this.state
     const nav = <Button title="New note" onPress={this.createNote.bind(this)} />
-    console.log('notes cnt 1:' + notes.length)
+    const editedNote = notes.filter((n) => n.id == editedNoteId)[0]
 
     return (
       <SafeAreaView
@@ -89,14 +90,11 @@ export default class App extends React.Component<
           navigation={nav}
           visible={!isNoteEditMode}
         >
-          <NotesList
-            notes={notes}
-            noteSelected={this.noteSelected.bind(this)}
-          />
+          <NotesList notes={notes} editNote={this.editNote.bind(this)} />
         </Container>
         <Modal style={mainStyle.mainContainer} visible={isNoteEditMode}>
           <NoteView
-            note={note}
+            note={editedNote}
             saved={this.noteSaved.bind(this)}
             style={{ height: '100%' }}
             closed={() => this.setState({ isNoteEditMode: false })}
