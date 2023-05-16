@@ -1,7 +1,3 @@
-import type {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack'
 import {
   FlatList,
   ListRenderItemInfo,
@@ -13,7 +9,7 @@ import RootStackParamList from '../types/notesListNavigator'
 import style from '../styles/notesList'
 import ListNote from '../components/listNote'
 import SearchBar from '../components/searchBar'
-import React, { useState, memo } from 'react'
+import React, { useState, memo, ReactNode } from 'react'
 import NoteView from './note'
 import noteService from '../core/services/noteService'
 
@@ -38,7 +34,7 @@ function search(text: string) {
 //     ],
 //   })
 // }
-
+const flatListRef: FlatList = null
 export default ({ notes, editNote }: Props) => {
   const [selectedNoteId, setSelectedNoteId] = useState(NaN)
 
@@ -72,6 +68,7 @@ export default ({ notes, editNote }: Props) => {
   //     () => true,
   //   )
 
+  setTimeout(function () {}, 1000)
   return (
     <View style={{ flex: 1 }}>
       <View>
@@ -88,6 +85,9 @@ export default ({ notes, editNote }: Props) => {
           />
         )}
         keyExtractor={(item) => item.id.toString()}
+        ref={(flatlist) => {
+          flatlist.scrollToIndex({ index: 5 })
+        }}
       ></FlatList>
     </View>
   )

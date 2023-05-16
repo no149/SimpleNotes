@@ -4,10 +4,7 @@ import {
   PlatformColor,
   TouchableOpacity,
 } from 'react-native'
-import {
-  MD3DarkTheme as DefaultTheme,
-  Provider as PaperProvider,
-} from 'react-native-paper'
+
 import { Button, StyleSheet, Text, View } from 'react-native'
 
 import NotesList from './screens/notesList'
