@@ -21,16 +21,45 @@ export default ({
   noteId: number
 }) => {
   return (
-    <View style={style.listItem}>
-      {isSelected && <Button onPress={(i) => editNote(noteId)} title="Edit" />}
-      <Text style={style.listItemHeader}>{title}</Text>
-      <NoteContent
-        contents={content}
-        height={isSelected ? undefined : 50}
-        containerStyle={{ paddingTop: 10, alignItems: 'center' }}
-        imageContentStyle={{}}
-        textContentStyle={{}}
-      />
+    <View
+      style={[
+        style.listItem,
+        isSelected
+          ? {
+              elevation: 10,
+              backgroundColor: '#ebe3e3',
+              borderWidth: 4,
+              borderBottomWidth: 4,
+            }
+          : {},
+      ]}
+    >
+      {isSelected && (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}
+        >
+          <View style={{ flexGrow: 1 }}>
+            <Button onPress={(i) => editNote(noteId)} title="Edit" />
+          </View>
+          <View style={{ flexGrow: 1 }}>
+            <Button onPress={(i) => editNote(noteId)} title="Delete" />
+          </View>
+        </View>
+      )}
+      <View style={{ paddingTop: 10, paddingBottom: 10 }}>
+        <Text style={style.listItemHeader}>{title}</Text>
+        <NoteContent
+          contents={content}
+          height={isSelected ? undefined : 50}
+          containerStyle={{ paddingTop: 10, alignItems: 'center' }}
+          imageContentStyle={{}}
+          textContentStyle={{}}
+        />
+      </View>
     </View>
   )
 }
