@@ -18,6 +18,7 @@ type Props = {
   newOrUpdatedNote?: Note
   noteSaved?: (note: Note) => void
   editNote: (noteId: number) => void
+  deleteNote: (noteId: number) => void
 }
 function search(text: string) {
   const result = this.noteSrv.findNotes(text, text)
@@ -33,9 +34,8 @@ function search(text: string) {
 //   })
 // }
 let flatListRef: FlatList<Note> = null
-export default ({ notes, editNote }: Props) => {
+export default ({ notes, editNote, deleteNote }: Props) => {
   const [selectedNoteId, setSelectedNoteId] = useState(NaN)
-  const noteIndexMap = new Map<number, number>(notes.map((n, ix) => [n.id, ix]))
   const noteSelectedToggled = (note: Note) => {
     setSelectedNoteId(selectedNoteId == note.id ? NaN : note.id)
   }
@@ -89,6 +89,7 @@ export default ({ notes, editNote }: Props) => {
             note={i.item}
             noteSelectedToggled={noteSelectedToggled}
             editNote={editNote}
+            deleteNote={deleteNote}
           />
         )}
         keyExtractor={(item) => item.id.toString()}
@@ -105,8 +106,11 @@ function ListItem({
   noteSelectedToggled: noteSelectToggled,
   isSelected,
   editNote,
+  deleteNote,
 }: {
   note: Note
+  deleteNote: (noteId: number) => void
+
   // noteUpdated: (note: Note) => void,
   noteSelectedToggled: (note: Note) => void
   isSelected: boolean
@@ -119,6 +123,7 @@ function ListItem({
         content={note.contents}
         isSelected={isSelected}
         editNote={editNote}
+        deleteNote={deleteNote}
         noteId={note.id}
       />
     </TouchableOpacity>

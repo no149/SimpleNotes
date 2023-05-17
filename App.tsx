@@ -45,7 +45,9 @@ export default class App extends React.Component<
   editNote(noteId: number) {
     this.setState({ isNoteEditMode: true, editedNoteId: noteId })
   }
-
+  deleteNote(noteId: number) {
+    //remove note
+  }
   createNote() {
     let newNote = new Note()
     this.setState({ isNoteEditMode: true })
@@ -87,7 +89,11 @@ export default class App extends React.Component<
           navigation={nav}
           visible={!isNoteEditMode}
         >
-          <NotesList notes={notes} editNote={this.editNote.bind(this)} />
+          <NotesList
+            notes={notes}
+            editNote={this.editNote.bind(this)}
+            deleteNote={this.deleteNote.bind(this)}
+          />
         </Container>
         <Modal style={mainStyle.mainContainer} visible={isNoteEditMode}>
           <NoteView
