@@ -12,12 +12,15 @@ export default ({
   content,
   isSelected,
   editNote,
+  deleteNote,
   noteId,
 }: {
   title: string
   content: Note<contentType>[]
   isSelected: boolean
   editNote: (noteId: number) => void
+  deleteNote: (noteId: number) => void
+
   noteId: number
 }) => {
   return (
@@ -46,7 +49,7 @@ export default ({
             <Button onPress={(i) => editNote(noteId)} title="Edit" />
           </View>
           <View style={{ flexGrow: 1 }}>
-            <Button onPress={(i) => editNote(noteId)} title="Delete" />
+            <Button onPress={(i) => deleteNote(noteId)} title="Delete" />
           </View>
         </View>
       )}
