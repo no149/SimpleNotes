@@ -9,7 +9,7 @@ import RootStackParamList from '../types/notesListNavigator'
 import style from '../styles/notesList'
 import ListNote from '../components/listNote'
 import SearchBar from '../components/searchBar'
-import React, { useState, memo, ReactNode } from 'react'
+import React, { useState, memo, ReactNode, useEffect } from 'react'
 import NoteView from './note'
 import noteService from '../core/services/noteService'
 
@@ -19,8 +19,6 @@ type Props = {
   noteSaved?: (note: Note) => void
   editNote: (noteId: number) => void
 }
-type state = { notes: Note[]; selectedNoteId: number }
-
 function search(text: string) {
   const result = this.noteSrv.findNotes(text, text)
 
@@ -34,14 +32,24 @@ function search(text: string) {
 //     ],
 //   })
 // }
-const flatListRef: FlatList = null
+let flatListRef: FlatList<Note> = null
 export default ({ notes, editNote }: Props) => {
   const [selectedNoteId, setSelectedNoteId] = useState(NaN)
-
+  const noteIndexMap = new Map<number, number>(notes.map((n, ix) => [n.id, ix]))
   const noteSelectedToggled = (note: Note) => {
     setSelectedNoteId(selectedNoteId == note.id ? NaN : note.id)
   }
-
+  useEffect(() => {
+    console.log('use effect called')
+    if (selectedNoteId) {
+      const hitNoteIx = notes.findIndex((n) => n.id == selectedNoteId)
+      console.log(hitNoteIx, 'hit note index')
+      setTimeout(
+        () => flatListRef.scrollToIndex({ index: hitNoteIx, viewPosition: 0 }),
+        50,
+      )
+    }
+  })
   //   const ListMemo = memo(
   //     function ({
   //       notes,
@@ -68,7 +76,6 @@ export default ({ notes, editNote }: Props) => {
   //     () => true,
   //   )
 
-  setTimeout(function () {}, 1000)
   return (
     <View style={{ flex: 1 }}>
       <View>
@@ -86,7 +93,7 @@ export default ({ notes, editNote }: Props) => {
         )}
         keyExtractor={(item) => item.id.toString()}
         ref={(flatlist) => {
-          flatlist.scrollToIndex({ index: 5 })
+          flatListRef = flatlist
         }}
       ></FlatList>
     </View>
