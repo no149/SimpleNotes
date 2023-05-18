@@ -1,6 +1,9 @@
 import {
+  Dimensions,
   FlatList,
   ListRenderItemInfo,
+  ScrollView,
+  StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native'
@@ -12,6 +15,9 @@ import SearchBar from '../components/searchBar'
 import React, { useState, memo, ReactNode, useEffect } from 'react'
 import NoteView from './note'
 import noteService from '../core/services/noteService'
+import mainStyle from './../styles/main'
+import mainContainerStyle from './../styles/main'
+
 
 type Props = {
   notes: Note[]
@@ -43,7 +49,7 @@ export default ({ notes, editNote, deleteNote }: Props) => {
     console.log('use effect called')
     if (selectedNoteId) {
       const hitNoteIx = notes.findIndex((n) => n.id == selectedNoteId)
-      console.log(hitNoteIx, 'hit note index')
+      if(hitNoteIx>=0)
       setTimeout(
         () => flatListRef.scrollToIndex({ index: hitNoteIx, viewPosition: 0 }),
         50,
@@ -96,11 +102,13 @@ export default ({ notes, editNote, deleteNote }: Props) => {
         ref={(flatlist) => {
           flatListRef = flatlist
         }}
+        pagingEnabled={true}
+        
       ></FlatList>
     </View>
   )
 }
-
+const screenWidth= Dimensions.get('screen').width
 function ListItem({
   note,
   noteSelectedToggled: noteSelectToggled,
@@ -117,7 +125,15 @@ function ListItem({
   editNote: (noteId: number) => void
 }) {
   return (
-    <TouchableOpacity onPress={() => noteSelectToggled(note)}>
+
+    <ScrollView horizontal={!isSelected} pagingEnabled={!isSelected} 
+     showsHorizontalScrollIndicator={true} 
+     snapToInterval={screenWidth}
+     onScroll={(e)=>{if(e.nativeEvent.contentOffset.x<=screenWidth/2)deleteNote(note.id)}}
+     
+     >
+    <TouchableOpacity onPress={() => noteSelectToggled(note)} 
+    style={{width:screenWidth-mainContainerStyle.mainContainer.padding*2}}>
       <ListNote
         title={note.title}
         content={note.contents}
@@ -127,5 +143,7 @@ function ListItem({
         noteId={note.id}
       />
     </TouchableOpacity>
+      <View style={{width:screenWidth}}></View>
+      </ScrollView>
   )
 }
