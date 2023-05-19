@@ -1,4 +1,5 @@
 import {
+  Animated,
   Dimensions,
   FlatList,
   ListRenderItemInfo,
@@ -8,16 +9,14 @@ import {
   View,
 } from 'react-native'
 import Note from '../model/note'
-import RootStackParamList from '../types/notesListNavigator'
 import style from '../styles/notesList'
 import ListNote from '../components/listNote'
 import SearchBar from '../components/searchBar'
-import React, { useState, memo, ReactNode, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import NoteView from './note'
 import noteService from '../core/services/noteService'
 import mainStyle from './../styles/main'
 import mainContainerStyle from './../styles/main'
-
 
 type Props = {
   notes: Note[]
@@ -49,11 +48,12 @@ export default ({ notes, editNote, deleteNote }: Props) => {
     console.log('use effect called')
     if (selectedNoteId) {
       const hitNoteIx = notes.findIndex((n) => n.id == selectedNoteId)
-      if(hitNoteIx>=0)
-      setTimeout(
-        () => flatListRef.scrollToIndex({ index: hitNoteIx, viewPosition: 0 }),
-        50,
-      )
+      if (hitNoteIx >= 0)
+        setTimeout(
+          () =>
+            flatListRef.scrollToIndex({ index: hitNoteIx, viewPosition: 0 }),
+          50,
+        )
     }
   })
   //   const ListMemo = memo(
@@ -103,12 +103,11 @@ export default ({ notes, editNote, deleteNote }: Props) => {
           flatListRef = flatlist
         }}
         pagingEnabled={true}
-        
       ></FlatList>
     </View>
   )
 }
-const screenWidth= Dimensions.get('screen').width
+const screenWidth = Dimensions.get('screen').width
 function ListItem({
   note,
   noteSelectedToggled: noteSelectToggled,
@@ -124,26 +123,50 @@ function ListItem({
   isSelected: boolean
   editNote: (noteId: number) => void
 }) {
+  const [opacity, setOpacity] = useState(1)
   return (
+    <ScrollView
+      horizontal={!isSelected}
+      pagingEnabled={!isSelected}
+      showsHorizontalScrollIndicator={true}
+      snapToInterval={screenWidth}
+      onScroll={(e) => {
+        if (
+          (e.nativeEvent.contentOffset.x -
+            mainContainerStyle.mainContainer.padding) /
+            e.nativeEvent.contentSize.width ==
+          0.5
+        ) {
+          setOpacity(1)
+          return
+        }
 
-    <ScrollView horizontal={!isSelected} pagingEnabled={!isSelected} 
-     showsHorizontalScrollIndicator={true} 
-     snapToInterval={screenWidth}
-     onScroll={(e)=>{if(e.nativeEvent.contentOffset.x<=screenWidth/2)deleteNote(note.id)}}
-     
-     >
-    <TouchableOpacity onPress={() => noteSelectToggled(note)} 
-    style={{width:screenWidth-mainContainerStyle.mainContainer.padding*2}}>
-      <ListNote
-        title={note.title}
-        content={note.contents}
-        isSelected={isSelected}
-        editNote={editNote}
-        deleteNote={deleteNote}
-        noteId={note.id}
-      />
-    </TouchableOpacity>
-      <View style={{width:screenWidth}}></View>
-      </ScrollView>
+        setOpacity(
+          ((2 * e.nativeEvent.contentOffset.x) /
+            e.nativeEvent.contentSize.width) *
+            0.6,
+        )
+        if (e.nativeEvent.contentOffset.x <= screenWidth / 2)
+          deleteNote(note.id)
+      }}
+      contentContainerStyle={{ opacity: opacity }}
+    >
+      <TouchableOpacity
+        onPress={() => noteSelectToggled(note)}
+        style={{
+          width: screenWidth - mainContainerStyle.mainContainer.padding * 2,
+        }}
+      >
+        <ListNote
+          title={note.title}
+          content={note.contents}
+          isSelected={isSelected}
+          editNote={editNote}
+          deleteNote={deleteNote}
+          noteId={note.id}
+        />
+      </TouchableOpacity>
+      <View style={{ width: screenWidth }}></View>
+    </ScrollView>
   )
 }
