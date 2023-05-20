@@ -102,7 +102,6 @@ export default ({ notes, editNote, deleteNote }: Props) => {
         ref={(flatlist) => {
           flatListRef = flatlist
         }}
-        pagingEnabled={true}
       ></FlatList>
     </View>
   )
@@ -124,6 +123,7 @@ function ListItem({
   editNote: (noteId: number) => void
 }) {
   const [opacity, setOpacity] = useState(1)
+  const shouldDeleteNote = opacity < 0.3
   return (
     <ScrollView
       horizontal={!isSelected}
@@ -146,10 +146,15 @@ function ListItem({
             e.nativeEvent.contentSize.width) *
             0.6,
         )
-        if (e.nativeEvent.contentOffset.x <= screenWidth / 2)
-          deleteNote(note.id)
+        console.log('shouldDeleteNote', shouldDeleteNote)
       }}
       contentContainerStyle={{ opacity: opacity }}
+      onScrollEndDrag={() => {
+        if (shouldDeleteNote) {
+          deleteNote(note.id)
+          console.log('delet note called')
+        }
+      }}
     >
       <TouchableOpacity
         onPress={() => noteSelectToggled(note)}
