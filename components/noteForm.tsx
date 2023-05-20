@@ -1,16 +1,21 @@
-import noteStyle from '../styles/note'
-import { View, TextInput, Button, StyleSheet, Text, Image } from 'react-native'
+import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
 import React from 'react'
 import { ViewStyle } from 'react-native/types'
 import Container from './container'
 import contentType from '../types/contentType'
-import { ImageContent, NoteContent, TextContent } from '../model/note'
+import {
+  ImageContent,
+  NoteContent as NoteContentModel,
+  TextContent,
+} from '../model/note'
+import { Appbar, FAB } from 'react-native-paper'
+import NoteContent from './noteContent'
 
 interface props extends state {
   saved: (
     noteId: number,
     title: string,
-    content: NoteContent<contentType>[],
+    content: NoteContentModel<contentType>[],
   ) => void
   closed: () => void
   deleted: (noteId: number) => void
@@ -21,7 +26,7 @@ interface props extends state {
 
 interface state {
   noteTitle: string
-  noteContent: NoteContent<contentType>[]
+  noteContent: NoteContentModel<contentType>[]
   noteId: number
 }
 
@@ -74,6 +79,11 @@ export default class Note extends React.Component<props, state> {
 
     return (
       <Container navigation={navigation} visible={visible}>
+        <Appbar style={[styles.bottom]}>
+          <Appbar.Action icon="image" onPress={() => {}} />
+          <Appbar.Action icon="music" onPress={() => {}} />
+          <FAB mode="flat" size="medium" icon="plus" onPress={() => {}} />
+        </Appbar>
         <View style={style.mainContainer}>
           <View>
             <TextInput
@@ -82,15 +92,15 @@ export default class Note extends React.Component<props, state> {
               onChangeText={this.setNoteTitle.bind(this)}
               style={style.input}
             />
-            {/*add editing content*/}
 
-            {noteContent.map((content) => {
-              if (content instanceof TextContent) {
-                return <Text>{content.content}</Text>
-              } else if (content instanceof ImageContent) {
-                return <Image source={content.content} />
-              }
-            })}
+            <NoteContent
+              contents={noteContent}
+              height={undefined}
+              containerStyle={{ paddingTop: 10, alignItems: 'center' }}
+              imageContentStyle={{ maxHeight: 100, maxWidth: 100 }}
+              textContentStyle={{}}
+              editable={true}
+            />
           </View>
         </View>
       </Container>
@@ -113,4 +123,16 @@ const style = StyleSheet.create({
   },
   description: {},
   navButton: { marginLeft: 10 },
+})
+const styles = StyleSheet.create({
+  bottom: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  fab: {
+    position: 'absolute',
+    right: 16,
+  },
 })

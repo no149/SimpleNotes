@@ -9,11 +9,13 @@ export default ({
   width,
   height: height,
   style,
+  editable,
 }: {
   image: ImageContent
   width?: number
   height?: number
   style: StyleProp<ImageStyle>
+  editable: boolean
 }) => {
   return <Image source={image.content} resizeMode="cover" style={style} />
 }

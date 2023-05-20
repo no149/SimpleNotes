@@ -33,8 +33,8 @@ export default ({
               backgroundColor: '#ebe3e3',
               borderWidth: 4,
               borderBottomWidth: 4,
-              alignSelf:'stretch',
-              width:'100%',
+              alignSelf: 'stretch',
+              width: '100%',
             }
           : {},
       ]}
@@ -63,6 +63,7 @@ export default ({
           containerStyle={{ paddingTop: 10, alignItems: 'center' }}
           imageContentStyle={{}}
           textContentStyle={{}}
+          editable={false}
         />
       </View>
     </View>

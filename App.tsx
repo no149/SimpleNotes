@@ -14,8 +14,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import RootStackParamList from './types/notesListNavigator'
 import noteService from './core/services/noteService'
-import NoteCommandBar from './components/noteCommandBar'
-import NotelistCommandBar from './components/notelistCommandBar'
+import { PaperProvider } from 'react-native-paper'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import mainStyle from './styles/main'
@@ -76,34 +75,36 @@ export default class App extends React.Component<
     const editedNote = notes.filter((n) => n.id == editedNoteId)[0]
 
     return (
-      <SafeAreaView
-        style={{
-          flexDirection: 'column',
-          flexGrow: 1,
-        }}
-      >
-        <Container
-          style={mainStyle.mainContainer}
-          navigation={nav}
-          visible={!isNoteEditMode}
+      <PaperProvider>
+        <SafeAreaView
+          style={{
+            flexDirection: 'column',
+            flexGrow: 1,
+          }}
         >
-          <NotesList
-            notes={notes}
-            editNote={this.editNote.bind(this)}
-            deleteNote={this.noteDeleted.bind(this)}
-          />
-        </Container>
-        <Modal style={mainStyle.mainContainer} visible={isNoteEditMode}>
-          <NoteView
-            note={editedNote}
-            saved={this.noteSaved.bind(this)}
-            style={{ height: '100%' }}
-            closed={() => this.setState({ isNoteEditMode: false })}
-            visible={isNoteEditMode}
-            deleted={this.noteDeleted.bind(this)}
-          />
-        </Modal>
-      </SafeAreaView>
+          <Container
+            style={mainStyle.mainContainer}
+            navigation={nav}
+            visible={!isNoteEditMode}
+          >
+            <NotesList
+              notes={notes}
+              editNote={this.editNote.bind(this)}
+              deleteNote={this.noteDeleted.bind(this)}
+            />
+          </Container>
+          <Modal style={mainStyle.mainContainer} visible={isNoteEditMode}>
+            <NoteView
+              note={editedNote}
+              saved={this.noteSaved.bind(this)}
+              style={{ height: '100%' }}
+              closed={() => this.setState({ isNoteEditMode: false })}
+              visible={isNoteEditMode}
+              deleted={this.noteDeleted.bind(this)}
+            />
+          </Modal>
+        </SafeAreaView>
+      </PaperProvider>
     )
   }
 }
