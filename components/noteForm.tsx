@@ -8,9 +8,11 @@ import {
   NoteContent as NoteContentModel,
   TextContent,
 } from '../model/note'
+import NoteModel from '../model/note'
 import { Appbar, FAB } from 'react-native-paper'
 import NoteContent from './noteContent'
-
+import ImagePicker from 'expo-image-picker'
+import showImagePicker from '../utility/ImagePicker'
 interface props extends state {
   saved: (
     noteId: number,
@@ -76,11 +78,27 @@ export default class Note extends React.Component<props, state> {
         </View>
       </>
     )
-
+    const selectImage = async () => {
+      let selectedImage = await showImagePicker()
+      if (selectedImage) {
+        this.setState({
+          noteContent: [
+            ...this.state.noteContent,
+            new ImageContent(
+              NoteModel.unsavedId,
+              { uri: selectedImage.uri },
+              selectedImage.width,
+              selectedImage.height,
+            ),
+          ],
+        })
+      }
+    }
+    console.log('contents len', this.state.noteContent.length)
     return (
       <Container navigation={navigation} visible={visible}>
         <Appbar style={[styles.bottom]}>
-          <Appbar.Action icon="image" onPress={() => {}} />
+          <Appbar.Action icon="image" onPress={selectImage} />
           <Appbar.Action icon="music" onPress={() => {}} />
           <FAB mode="flat" size="medium" icon="plus" onPress={() => {}} />
         </Appbar>
@@ -90,16 +108,20 @@ export default class Note extends React.Component<props, state> {
               placeholder="Title"
               defaultValue={noteTitle}
               onChangeText={this.setNoteTitle.bind(this)}
-              style={style.input}
+              style={[
+                style.input,
+                { fontSize: 20, paddingVertical: 4, paddingRight: 2 },
+              ]}
             />
 
             <NoteContent
-              contents={noteContent}
+              contents={this.state.noteContent}
               height={undefined}
               containerStyle={{ paddingTop: 10, alignItems: 'center' }}
               imageContentStyle={{ maxHeight: 100, maxWidth: 100 }}
               textContentStyle={{}}
               editable={true}
+              isNew={this.props.noteId == NoteModel.unsavedId}
             />
           </View>
         </View>

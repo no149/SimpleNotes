@@ -6,6 +6,7 @@ import {
   ImageStyle,
   TextStyle,
   TextInput,
+  StyleSheet,
 } from 'react-native'
 import { ImageContent, NoteContent, TextContent } from '../model/note'
 import Image from './Image'
@@ -19,6 +20,7 @@ export default ({
   textContentStyle,
   height,
   editable,
+  isNew,
 }: {
   contents: NoteContent<contentType>[]
   height: number
@@ -26,21 +28,45 @@ export default ({
   imageContentStyle: StyleProp<ImageStyle>
   textContentStyle: StyleProp<TextStyle>
   editable: boolean
+  isNew: boolean
 }) => {
   return (
     <View style={[containerStyle, { maxHeight: height }]}>
       {contents.map((c) => {
+        console.log('content', c)
         if (c instanceof ImageContent) {
           return (
-            <Image image={c} style={imageContentStyle} editable={editable} />
+            <Image
+              image={c}
+              style={imageContentStyle}
+              editable={editable}
+              height={c.height}
+              width={c.width}
+            />
           )
-        } else if (c instanceof TextContent)
-          return editable ? (
+        } else if (c instanceof TextContent) {
+          return !editable ? (
             <Text style={textContentStyle}>{c.content}</Text>
           ) : (
-            <TextInput defaultValue={c.content} />
+            <TextInput
+              defaultValue={c.content}
+              multiline={true}
+              style={style.textInput}
+            />
           )
+        }
       })}
+      {isNew && (
+        <TextInput
+          multiline={true}
+          numberOfLines={10}
+          style={style.textInput}
+        />
+      )}
     </View>
   )
 }
+
+const style = StyleSheet.create({
+  textInput: { width: '100%', fontSize: 16 },
+})

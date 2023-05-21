@@ -17,8 +17,17 @@ export class NoteContent<type> {
 }
 
 export class ImageContent extends NoteContent<{ uri: string } | number> {
-  constructor(id: number, content: { uri: string } | number) {
+  width = 0
+  height = 0
+  constructor(
+    id: number,
+    content: { uri: string } | number,
+    width: number,
+    height: number,
+  ) {
     super(id, content)
+    this.height = height
+    this.width = width
   }
 }
 

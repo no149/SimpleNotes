@@ -1,6 +1,7 @@
 import { Asset } from 'expo-asset'
 import Note, { TextContent, ImageContent } from '../../model/note'
 import { readAsStringAsync } from 'expo-file-system'
+import sampleImage from '../../assets/sample.jpg'
 
 export default class {
   deleteNote(noteId: number) {
@@ -10,7 +11,7 @@ export default class {
   private notes: Note[]
   private notesInit = false
   async initNotes() {
-    const img = new ImageContent(6, await this.getSamplePicture())
+    const img = new ImageContent(6, await this.getSamplePicture(), 200, 200)
 
     this.notes = [
       {
