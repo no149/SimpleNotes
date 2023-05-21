@@ -14,7 +14,7 @@ import contentType from '../types/contentType'
 import React from 'react'
 
 export default ({
-  contents,
+  content,
   containerStyle,
   imageContentStyle,
   textContentStyle,
@@ -22,8 +22,8 @@ export default ({
   editable,
   isNew,
 }: {
-  contents: NoteContent<contentType>[]
-  height: number
+  content: NoteContent<contentType>
+  height?: number
   containerStyle: StyleProp<ViewStyle>
   imageContentStyle: StyleProp<ImageStyle>
   textContentStyle: StyleProp<TextStyle>
@@ -32,30 +32,26 @@ export default ({
 }) => {
   return (
     <View style={[containerStyle, { maxHeight: height }]}>
-      {contents.map((c) => {
-        console.log('content', c)
-        if (c instanceof ImageContent) {
-          return (
-            <Image
-              image={c}
-              style={imageContentStyle}
-              editable={editable}
-              height={c.height}
-              width={c.width}
-            />
-          )
-        } else if (c instanceof TextContent) {
-          return !editable ? (
-            <Text style={textContentStyle}>{c.content}</Text>
-          ) : (
-            <TextInput
-              defaultValue={c.content}
-              multiline={true}
-              style={style.textInput}
-            />
-          )
-        }
-      })}
+      {content instanceof ImageContent && (
+        <Image
+          image={content}
+          style={imageContentStyle}
+          editable={editable}
+          height={content.height}
+          width={content.width}
+        />
+      )}
+      {content instanceof TextContent &&
+        (!editable ? (
+          <Text style={textContentStyle}>{content.content}</Text>
+        ) : (
+          <TextInput
+            defaultValue={content.content}
+            multiline={true}
+            style={style.textInput}
+          />
+        ))}
+
       {isNew && (
         <TextInput
           multiline={true}

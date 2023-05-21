@@ -1,4 +1,11 @@
-import { View, TextInput, Button, StyleSheet, Text } from 'react-native'
+import {
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native'
 import React from 'react'
 import { ViewStyle } from 'react-native/types'
 import Container from './container'
@@ -28,8 +35,9 @@ interface props extends state {
 
 interface state {
   noteTitle: string
-  noteContent: NoteContentModel<contentType>[]
+  noteContents: NoteContentModel<contentType>[]
   noteId: number
+  selectedContents: number[]
 }
 
 export default class Note extends React.Component<props, state> {
@@ -37,8 +45,9 @@ export default class Note extends React.Component<props, state> {
     super(props)
     this.state = {
       noteTitle: props.noteTitle,
-      noteContent: props.noteContent,
+      noteContents: props.noteContents,
       noteId: props.noteId,
+      selectedContents: [],
     }
   }
 
@@ -46,11 +55,10 @@ export default class Note extends React.Component<props, state> {
     this.setState({ noteTitle: v })
   }
   setNoteDescription(v) {
-    this.setState({ noteContent: v })
+    this.setState({ noteContents: v })
   }
   render() {
     const { noteTitle } = this.props
-    const { noteContent } = this.props
     const { visible } = this.props
 
     const navigation = (
@@ -62,7 +70,7 @@ export default class Note extends React.Component<props, state> {
               this.props.saved(
                 this.props.noteId,
                 this.state.noteTitle,
-                this.state.noteContent,
+                this.state.noteContents,
               )
             }
           />
@@ -78,29 +86,49 @@ export default class Note extends React.Component<props, state> {
         </View>
       </>
     )
-    const selectImage = async () => {
+
+    async function selectImage() {
       let selectedImage = await showImagePicker()
       if (selectedImage) {
-        this.setState({
-          noteContent: [
-            ...this.state.noteContent,
-            new ImageContent(
-              NoteModel.unsavedId,
-              { uri: selectedImage.uri },
-              selectedImage.width,
-              selectedImage.height,
-            ),
-          ],
-        })
+        // setImageSource({
+        //   content: { uri: selectedImage.uri },
+        //   height: selectedImage.height,
+        //   width: selectedImage.width,
+        // })
       }
     }
-    console.log('contents len', this.state.noteContent.length)
+
+    const toggleSelect = async (contentId: number) => {
+      this.state.selectedContents.indexOf(contentId) == -1
+        ? this.setState({
+            selectedContents: [...this.state.selectedContents, contentId],
+          })
+        : this.setState({
+            selectedContents: [
+              ...this.state.selectedContents.filter((v) => v != contentId),
+            ],
+          })
+    }
+    const isSelected = (id: number) => {
+      let selected = this.state.selectedContents.indexOf(id) != -1
+      console.log('selected', selected)
+      return selected
+    }
+
     return (
       <Container navigation={navigation} visible={visible}>
         <Appbar style={[styles.bottom]}>
-          <Appbar.Action icon="image" onPress={selectImage} />
-          <Appbar.Action icon="music" onPress={() => {}} />
-          <FAB mode="flat" size="medium" icon="plus" onPress={() => {}} />
+          {this.state.selectedContents.length > 0 && (
+            <>
+              <Appbar.Action icon="delete" />
+            </>
+          )}
+          {this.state.selectedContents.length == 0 && (
+            <>
+              <Appbar.Action icon="music" onPress={() => {}} />
+              <FAB mode="flat" size="medium" icon="plus" onPress={() => {}} />
+            </>
+          )}
         </Appbar>
         <View style={style.mainContainer}>
           <View>
@@ -113,16 +141,27 @@ export default class Note extends React.Component<props, state> {
                 { fontSize: 20, paddingVertical: 4, paddingRight: 2 },
               ]}
             />
-
-            <NoteContent
-              contents={this.state.noteContent}
-              height={undefined}
-              containerStyle={{ paddingTop: 10, alignItems: 'center' }}
-              imageContentStyle={{ maxHeight: 100, maxWidth: 100 }}
-              textContentStyle={{}}
-              editable={true}
-              isNew={this.props.noteId == NoteModel.unsavedId}
-            />
+            {this.state.noteContents.map((content) => {
+              return (
+                <TouchableOpacity
+                  onLongPress={
+                    content instanceof TextContent == false
+                      ? () => toggleSelect(content.id)
+                      : () => {}
+                  }
+                  style={{ borderWidth: isSelected(content.id) ? 4 : 0 }}
+                >
+                  <NoteContent
+                    content={content}
+                    containerStyle={{ paddingTop: 10, alignItems: 'center' }}
+                    imageContentStyle={{ maxHeight: 100, maxWidth: 100 }}
+                    textContentStyle={{}}
+                    editable={true}
+                    isNew={this.props.noteId == NoteModel.unsavedId}
+                  />
+                </TouchableOpacity>
+              )
+            })}
           </View>
         </View>
       </Container>

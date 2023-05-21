@@ -164,7 +164,7 @@ function ListItem({
       >
         <ListNote
           title={note.title}
-          content={note.contents}
+          contents={note.contents}
           isSelected={isSelected}
           editNote={editNote}
           deleteNote={deleteNote}

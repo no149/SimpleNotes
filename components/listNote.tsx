@@ -9,14 +9,14 @@ import { Button } from 'react-native'
 
 export default ({
   title,
-  content,
+  contents,
   isSelected,
   editNote,
   deleteNote,
   noteId,
 }: {
   title: string
-  content: Note<contentType>[]
+  contents: Note<contentType>[]
   isSelected: boolean
   editNote: (noteId: number) => void
   deleteNote: (noteId: number) => void
@@ -57,14 +57,19 @@ export default ({
       )}
       <View style={{ paddingTop: 10, paddingBottom: 10 }}>
         <Text style={style.listItemHeader}>{title}</Text>
-        <NoteContent
-          contents={content}
-          height={isSelected ? undefined : 50}
-          containerStyle={{ paddingTop: 10, alignItems: 'center' }}
-          imageContentStyle={{}}
-          textContentStyle={{}}
-          editable={false}
-        />
+        {contents.map((content) => {
+          return (
+            <NoteContent
+              content={content}
+              height={isSelected ? undefined : 50}
+              containerStyle={{ paddingTop: 10, alignItems: 'center' }}
+              imageContentStyle={{}}
+              textContentStyle={{}}
+              editable={false}
+              isNew={false}
+            />
+          )
+        })}
       </View>
     </View>
   )

@@ -34,7 +34,7 @@ export default ({
     <View style={style}>
       <NoteForm
         noteTitle={note.title}
-        noteContent={note.contents}
+        noteContents={note.contents}
         noteId={note.id}
         saved={saved}
         closed={closed}

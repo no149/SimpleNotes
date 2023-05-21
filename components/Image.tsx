@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import {
-  GestureResponderEvent,
   Image,
   ImageStyle,
   StyleProp,
@@ -9,7 +8,6 @@ import {
 } from 'react-native'
 import { ImageContent } from '../model/note'
 import React from 'react'
-import { isPropertyAccessOrQualifiedName } from 'typescript'
 import showImagePicker from '../utility/ImagePicker'
 
 export default ({
@@ -30,7 +28,7 @@ export default ({
     width,
     height,
   })
-  console.log('image source', imageSource)
+  const [selected, setSelected] = useState(false)
   const imageComponent = (
     <Image
       source={imageSource.content}
@@ -41,22 +39,9 @@ export default ({
       ]}
     />
   )
-  async function selectImage() {
-    let selectedImage = await showImagePicker()
-    if (selectedImage) {
-      setImageSource({
-        content: { uri: selectedImage.uri },
-        height: selectedImage.height,
-        width: selectedImage.width,
-      })
-    }
-  }
 
-  return editable ? (
-    <TouchableOpacity onPress={showImagePicker}>
-      {imageComponent}
-    </TouchableOpacity>
-  ) : (
-    imageComponent
-  )
+  const toggleSelect = () => {
+    setSelected(!selected)
+  }
+  return imageComponent
 }
