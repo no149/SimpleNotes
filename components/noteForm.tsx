@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Pressable,
+  ScrollView,
 } from 'react-native'
 import React from 'react'
 import { ViewStyle } from 'react-native/types'
@@ -120,23 +121,24 @@ export default class Note extends React.Component<props, state> {
       console.log('selected', selected)
       return selected
     }
+    const addImageContent = async () => {
+      console.log('addImageContent')
 
+      let imageAsset = await showImagePicker()
+      if (!imageAsset) return
+
+      const imageContent = new ImageContent(
+        { uri: imageAsset.uri },
+        imageAsset.width,
+        imageAsset.height,
+      )
+      this.setState({
+        noteContents: [...this.state.noteContents, imageContent],
+      })
+    }
     return (
       <Container navigation={navigation} visible={visible}>
-        <Appbar style={[styles.bottom]}>
-          {this.state.selectedContents.length > 0 && (
-            <>
-              <Appbar.Action icon="delete" />
-            </>
-          )}
-          {this.state.selectedContents.length == 0 && (
-            <>
-              <Appbar.Action icon="music" onPress={() => {}} />
-              <FAB mode="flat" size="medium" icon="plus" onPress={() => {}} />
-            </>
-          )}
-        </Appbar>
-        <View style={style.mainContainer}>
+        <ScrollView style={style.mainContainer}>
           <Pressable
             onPress={() => toggleSelect(null)}
             style={{ height: '100%' }}
@@ -147,7 +149,14 @@ export default class Note extends React.Component<props, state> {
               onChangeText={this.setNoteTitle.bind(this)}
               style={[
                 style.input,
-                { fontSize: 20, paddingVertical: 4, paddingRight: 2 },
+                {
+                  fontSize: 20,
+                  paddingVertical: 4,
+                  paddingRight: 2,
+                  borderWidth: 0,
+                  marginBottom: 5,
+                  borderBottomWidth: 1,
+                },
               ]}
               onPressIn={() => toggleSelect(null)}
             />
@@ -179,7 +188,21 @@ export default class Note extends React.Component<props, state> {
               )
             })}
           </Pressable>
-        </View>
+        </ScrollView>
+        <Appbar style={[styles.bottom]}>
+          {this.state.selectedContents.length > 0 && (
+            <>
+              <Appbar.Action icon="delete" />
+            </>
+          )}
+          {this.state.selectedContents.length == 0 && (
+            <>
+              <Appbar.Action icon="music" onPress={() => {}} />
+              <Appbar.Action icon="image" onPress={addImageContent} />
+              <FAB mode="flat" size="medium" icon="plus" onPress={() => {}} />
+            </>
+          )}
+        </Appbar>
       </Container>
     )
   }

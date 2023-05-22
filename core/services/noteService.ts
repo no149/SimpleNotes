@@ -52,7 +52,11 @@ export default class {
         title: 'title 14',
         contents: [new TextContent(14, 'content 14')],
       },
-      { id: 12, title: 'title 12', contents: [img] },
+      {
+        id: 12,
+        title: 'title 12',
+        contents: [img, new TextContent(15, 'content 15')],
+      },
     ]
     this.notesInit = true
   }

@@ -46,24 +46,23 @@ export default ({
         (!editable ? (
           <Text style={textContentStyle}>{content.content}</Text>
         ) : (
-          <TextInput
-            defaultValue={content.content}
-            multiline={true}
-            style={style.textInput}
-          />
+          NoteTextInput(content.content)
         ))}
 
-      {isNew && (
-        <TextInput
-          multiline={true}
-          numberOfLines={10}
-          style={style.textInput}
-        />
-      )}
+      {isNew && NoteTextInput('')}
     </View>
   )
 }
-
+function NoteTextInput(defaultValue: string) {
+  return (
+    <TextInput
+      defaultValue={defaultValue}
+      multiline={true}
+      style={style.textInput}
+      placeholder="Write here..."
+    />
+  )
+}
 const style = StyleSheet.create({
   textInput: { width: '100%', fontSize: 16 },
 })
