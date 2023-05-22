@@ -30,7 +30,6 @@ export default ({
   editable: boolean
   isNew: boolean
 }) => {
-  console.log('height', height)
   return (
     <View style={[containerStyle, { maxHeight: height }]}>
       {content instanceof ImageContent && (
@@ -49,7 +48,8 @@ export default ({
           NoteTextInput(content.content)
         ))}
 
-      {isNew && NoteTextInput('')}
+      {(isNew || (content instanceof TextContent == false && editable)) &&
+        NoteTextInput('')}
     </View>
   )
 }
