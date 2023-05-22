@@ -149,7 +149,13 @@ export default class Note extends React.Component<props, state> {
                       ? () => toggleSelect(content.id)
                       : () => {}
                   }
-                  style={{ borderWidth: isSelected(content.id) ? 4 : 0 }}
+                  style={
+                    isSelected(content.id)
+                      ? {
+                          backgroundColor: 'rgba(247, 206, 245, 0.58)',
+                        }
+                      : {}
+                  }
                 >
                   <NoteContent
                     content={content}

@@ -23,13 +23,14 @@ export default ({
   isNew,
 }: {
   content: NoteContent<contentType>
-  height?: number
+  height?: number | string
   containerStyle: StyleProp<ViewStyle>
   imageContentStyle: StyleProp<ImageStyle>
   textContentStyle: StyleProp<TextStyle>
   editable: boolean
   isNew: boolean
 }) => {
+  console.log('height', height)
   return (
     <View style={[containerStyle, { maxHeight: height }]}>
       {content instanceof ImageContent && (

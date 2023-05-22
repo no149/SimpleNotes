@@ -5,6 +5,7 @@ import {
   StyleProp,
   StyleSheet,
   TouchableOpacity,
+  View,
 } from 'react-native'
 import { ImageContent } from '../model/note'
 import React from 'react'
@@ -30,14 +31,16 @@ export default ({
   })
   const [selected, setSelected] = useState(false)
   const imageComponent = (
-    <Image
-      source={imageSource.content}
-      resizeMode="cover"
-      style={[
-        { minWidth: imageSource.width, minHeight: imageSource.height },
-        style,
-      ]}
-    />
+    <View style={{ height: height }}>
+      <Image
+        source={imageSource.content}
+        resizeMode="contain"
+        style={[
+          { minWidth: imageSource.width, minHeight: imageSource.height },
+          style,
+        ]}
+      />
+    </View>
   )
 
   const toggleSelect = () => {
