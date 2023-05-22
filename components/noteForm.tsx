@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Pressable,
 } from 'react-native'
 import React from 'react'
 import { ViewStyle } from 'react-native/types'
@@ -99,15 +100,20 @@ export default class Note extends React.Component<props, state> {
     }
 
     const toggleSelect = async (contentId: number) => {
-      this.state.selectedContents.indexOf(contentId) == -1
-        ? this.setState({
-            selectedContents: [...this.state.selectedContents, contentId],
-          })
-        : this.setState({
-            selectedContents: [
-              ...this.state.selectedContents.filter((v) => v != contentId),
-            ],
-          })
+      if (!contentId) {
+        console.log('clear selected')
+
+        this.setState({ selectedContents: [] })
+      } else
+        this.state.selectedContents.indexOf(contentId) == -1
+          ? this.setState({
+              selectedContents: [...this.state.selectedContents, contentId],
+            })
+          : this.setState({
+              selectedContents: [
+                ...this.state.selectedContents.filter((v) => v != contentId),
+              ],
+            })
     }
     const isSelected = (id: number) => {
       let selected = this.state.selectedContents.indexOf(id) != -1
@@ -131,7 +137,10 @@ export default class Note extends React.Component<props, state> {
           )}
         </Appbar>
         <View style={style.mainContainer}>
-          <View>
+          <Pressable
+            onPress={() => toggleSelect(null)}
+            style={{ height: '100%' }}
+          >
             <TextInput
               placeholder="Title"
               defaultValue={noteTitle}
@@ -140,6 +149,7 @@ export default class Note extends React.Component<props, state> {
                 style.input,
                 { fontSize: 20, paddingVertical: 4, paddingRight: 2 },
               ]}
+              onPressIn={() => toggleSelect(null)}
             />
             {this.state.noteContents.map((content) => {
               return (
@@ -168,7 +178,7 @@ export default class Note extends React.Component<props, state> {
                 </TouchableOpacity>
               )
             })}
-          </View>
+          </Pressable>
         </View>
       </Container>
     )
