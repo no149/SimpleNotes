@@ -23,7 +23,7 @@ export class ImageContent extends NoteContent<{ uri: string } | number> {
     content: { uri: string } | number,
     width: number,
     height: number,
-    id?: number,
+    id: number=0,
   ) {
     super(id, content)
     this.height = height

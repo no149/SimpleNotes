@@ -101,9 +101,9 @@ export default class Note extends React.Component<props, state> {
     }
 
     const toggleSelect = async (contentId: number) => {
-      if (!contentId) {
+      console.log('selecting content',contentId);
+      if (!contentId && contentId!=0) {
         console.log('clear selected')
-
         this.setState({ selectedContents: [] })
       } else
         this.state.selectedContents.indexOf(contentId) == -1
@@ -120,6 +120,11 @@ export default class Note extends React.Component<props, state> {
       let selected = this.state.selectedContents.indexOf(id) != -1
       console.log('selected', selected)
       return selected
+    }
+
+    const deleteContent = ()=>{
+      this.setState({noteContents:this.state.noteContents.filter(nc=>!this.state.selectedContents.includes( nc.id)),
+      selectedContents:[]})
     }
     const addImageContent = async () => {
       console.log('addImageContent')
@@ -192,7 +197,7 @@ export default class Note extends React.Component<props, state> {
         <Appbar style={[styles.bottom]}>
           {this.state.selectedContents.length > 0 && (
             <>
-              <Appbar.Action icon="delete" />
+              <Appbar.Action icon="delete" onPress={deleteContent} />
             </>
           )}
           {this.state.selectedContents.length == 0 && (

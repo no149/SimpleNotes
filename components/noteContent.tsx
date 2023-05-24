@@ -48,7 +48,7 @@ export default ({
           NoteTextInput(content.content)
         ))}
 
-      {(isNew || (content instanceof TextContent == false && editable)) &&
+      {isNew &&
         NoteTextInput('')}
     </View>
   )
